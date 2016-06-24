@@ -1,0 +1,26 @@
+
+<ion-toolbar>
+    <ion-title>mjrChat</ion-title>
+</ion-toolbar>
+
+<ion-content padding class="getting-started">
+
+    <h3>Welcome to mjrChat!</h3>
+
+    <ion-list>
+
+        <ion-item>
+            <ion-label fixed>Username</ion-label>
+            <ion-input type="text" value=""></ion-input>
+        </ion-item>
+
+        <ion-item>
+            <ion-label fixed>Password</ion-label>
+            <ion-input type="password"></ion-input>
+        </ion-item>
+
+    </ion-list>
+    <button full>Login</button>
+    <button full secondary [navPush]="registerPage">Register</button>
+
+</ion-content>
