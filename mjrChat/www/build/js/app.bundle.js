@@ -80319,14 +80319,66 @@
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var ionic_angular_1 = __webpack_require__(102);
+	var angularfire2_1 = __webpack_require__(412);
+	var core_1 = __webpack_require__(6);
+	var login_1 = __webpack_require__(462);
 	var RegisterPage = (function () {
-	    function RegisterPage() {
+	    function RegisterPage(af, navCtrl) {
+	        this.af = af;
+	        this.navCtrl = navCtrl;
 	    }
+	    RegisterPage.prototype.openLoginPage = function () {
+	        this.navCtrl.push(login_1.LoginPage);
+	    };
+	    RegisterPage.prototype.registerUser = function (credentials) {
+	        var _this = this;
+	        var loading = ionic_angular_1.Loading.create({
+	            content: "Please wait..."
+	        });
+	        this.navCtrl.present(loading);
+	        this.af.auth.createUser(credentials).then(function (authData) {
+	            console.log(authData);
+	            credentials.created = true;
+	            return _this.login(credentials, loading);
+	        }).catch(function (error) {
+	            loading.dismiss();
+	            if (error) {
+	                switch (error.code) {
+	                    case "INVALID_EMAIL":
+	                        _this.error = "Invalid email.";
+	                        break;
+	                    case "EMAIL_TAKEN":
+	                        _this.error = "The specified email address is already in use.";
+	                        break;
+	                    case "NETWORK_ERROR":
+	                        _this.error = "An error occurred while attempting to contact the authentication server.";
+	                        break;
+	                    default:
+	                        _this.error = error;
+	                }
+	            }
+	        });
+	    };
+	    RegisterPage.prototype.login = function (credentials, loading) {
+	        var _this = this;
+	        this.af.auth.login(credentials, {
+	            provider: angularfire2_1.AuthProviders.Password,
+	            method: angularfire2_1.AuthMethods.Password
+	        }).then(function (authData) {
+	            console.log(authData);
+	            loading.dismiss();
+	            _this.navCtrl.setRoot(login_1.LoginPage);
+	        }).catch(function (error) {
+	            loading.dismiss();
+	            _this.error = error;
+	            console.log(error);
+	        });
+	    };
 	    RegisterPage = __decorate([
-	        ionic_angular_1.Page({
+	        core_1.Component({
 	            templateUrl: 'build/pages/register/register.html'
 	        }), 
-	        __metadata('design:paramtypes', [])
+	        __metadata('design:paramtypes', [angularfire2_1.AngularFire, ionic_angular_1.NavController])
 	    ], RegisterPage);
 	    return RegisterPage;
 	}());
