@@ -1,21 +1,29 @@
-import {App, IonicApp, Platform, MenuController} from 'ionic-angular';
-import {HelloIonicPage} from './pages/hello-ionic/hello-ionic';
-import {ListPage} from './pages/list/list';
+import {ViewChild, Component} from '@angular/core';
+
+import {ionicBootstrap, Platform, MenuController, Nav} from 'ionic-angular';
+import {StatusBar, Splashscreen} from 'ionic-native';
+
 import {LoginPage} from './pages/login/login';
 import {RegisterPage} from "./pages/register/register";
 
+interface PageObj {
+  title: string;
+  component: any;
+  icon: string;
+  index?: number;
+}
 
-@App({
+@Component({
   templateUrl: 'build/app.html',
-  config: {} // http://ionicframework.com/docs/v2/api/config/Config/
 })
-class MyApp {
+
+class mjrChat {
   // make HelloIonicPage the root (or first) page
   rootPage: any = LoginPage;
   pages: Array<{title: string, component: any}>;
 
+  @ViewChild(Nav) nav: Nav;
   constructor(
-    private app: IonicApp,
     private platform: Platform,
     private menu: MenuController
   ) {
@@ -23,8 +31,7 @@ class MyApp {
 
     // set our app's pages
     this.pages = [
-      { title: 'Hello Ionic', component: HelloIonicPage },
-      { title: 'My First List', component: ListPage },
+      { title: 'Login', component: LoginPage },
       { title: 'Register', component: RegisterPage }
     ];
   }
@@ -48,11 +55,20 @@ class MyApp {
     });
   }
 
-  openPage(page) {
-    // close the menu when clicking a link from the menu
-    this.menu.close();
-    // navigate to the new page if it is not the current page
-    let nav = this.app.getComponent('nav');
-    nav.setRoot(page.component);
+  openPage(page: PageObj) {
+    // the nav component was found using @ViewChild(Nav)
+    // reset the nav to remove previous pages and only have this page
+    // we wouldn't want the back button to show in this scenario
+    if (page.index) {
+      this.nav.setRoot(page.component, {tabIndex: page.index});
+
+    } else {
+      this.nav.setRoot(page.component);
+    }
+
   }
 }
+
+ionicBootstrap(mjrChat, [], {
+  tabbarPlacement: 'bottom'
+});
