@@ -12,6 +12,7 @@ import {FIREBASE_PROVIDERS,
 
 import {LoginPage} from './pages/login/login';
 import {RegisterPage} from "./pages/register/register";
+import {HomePage} from "./pages/home/home";
 
 interface PageObj {
     title: string;
@@ -38,7 +39,8 @@ class mjrChat {
         // set our app's pages
         this.pages = [
             {title: 'Login', component: LoginPage},
-            {title: 'Register', component: RegisterPage}
+            {title: 'Register', component: RegisterPage},
+            {title: 'Home', component: HomePage}
         ];
     }
 
@@ -77,10 +79,10 @@ class mjrChat {
 
 ionicBootstrap(mjrChat, [FIREBASE_PROVIDERS,
     defaultFirebase({
-        apiKey: "AIzaSyA93TznBXNukAv2WSHnYUUczSNYrJsnx7Q",
-        authDomain: "mjrchat-d0cc6.firebaseapp.com",
-        databaseURL: "https://mjrchat-d0cc6.firebaseio.com",
-        storageBucket: "mjrchat-d0cc6.appspot.com"
+        apiKey: "AIzaSyA-o8CcplGGUxm13cfJhRPS6iPYnPqqsv8",
+        authDomain: "mjrchat-fafa3.firebaseapp.com",
+        databaseURL: "https://mjrchat-fafa3.firebaseio.com",
+        storageBucket: "",
     }),
     firebaseAuthConfig({
         provider: AuthProviders.Twitter,

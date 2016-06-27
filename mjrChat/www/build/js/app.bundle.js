@@ -2500,6 +2500,7 @@
 	var angularfire2_1 = __webpack_require__(412);
 	var login_1 = __webpack_require__(462);
 	var register_1 = __webpack_require__(463);
+	var home_1 = __webpack_require__(464);
 	var mjrChat = (function () {
 	    function mjrChat(platform, menu) {
 	        this.platform = platform;
@@ -2510,7 +2511,8 @@
 	        // set our app's pages
 	        this.pages = [
 	            { title: 'Login', component: login_1.LoginPage },
-	            { title: 'Register', component: register_1.RegisterPage }
+	            { title: 'Register', component: register_1.RegisterPage },
+	            { title: 'Home', component: home_1.HomePage }
 	        ];
 	    }
 	    mjrChat.prototype.initializeApp = function () {
@@ -2556,10 +2558,10 @@
 	}());
 	ionic_angular_1.ionicBootstrap(mjrChat, [angularfire2_1.FIREBASE_PROVIDERS,
 	    angularfire2_1.defaultFirebase({
-	        apiKey: "AIzaSyA93TznBXNukAv2WSHnYUUczSNYrJsnx7Q",
-	        authDomain: "mjrchat-d0cc6.firebaseapp.com",
-	        databaseURL: "https://mjrchat-d0cc6.firebaseio.com",
-	        storageBucket: "mjrchat-d0cc6.appspot.com"
+	        apiKey: "AIzaSyA-o8CcplGGUxm13cfJhRPS6iPYnPqqsv8",
+	        authDomain: "mjrchat-fafa3.firebaseapp.com",
+	        databaseURL: "https://mjrchat-fafa3.firebaseio.com",
+	        storageBucket: "",
 	    }),
 	    angularfire2_1.firebaseAuthConfig({
 	        provider: angularfire2_1.AuthProviders.Twitter,
@@ -80288,16 +80290,56 @@
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var ionic_angular_1 = __webpack_require__(102);
+	var angularfire2_1 = __webpack_require__(412);
+	var core_1 = __webpack_require__(6);
 	var register_1 = __webpack_require__(463);
+	var home_1 = __webpack_require__(464);
 	var LoginPage = (function () {
-	    function LoginPage() {
+	    function LoginPage(af, navCtrl) {
+	        this.af = af;
+	        this.navCtrl = navCtrl;
 	        this.registerPage = register_1.RegisterPage;
 	    }
+	    LoginPage.prototype.login = function (credentials) {
+	        var _this = this;
+	        var loading = ionic_angular_1.Loading.create({
+	            content: "Please wait"
+	        });
+	        this.navCtrl.present(loading);
+	        this.af.auth.login(credentials, {
+	            provider: angularfire2_1.AuthProviders.Password,
+	            method: angularfire2_1.AuthMethods.Password
+	        }).then(function (authData) {
+	            console.log(authData);
+	            loading.dismiss();
+	            _this.navCtrl.setRoot(home_1.HomePage);
+	        }).catch(function (error) {
+	            loading.dismiss();
+	            if (error) {
+	                switch (error.code) {
+	                    case "INVALID_EMAIL":
+	                        _this.error = "Invalid email.";
+	                        break;
+	                    case "INVALID_USER":
+	                        _this.error = "The specified user account email/password are incorrect.";
+	                        break;
+	                    case "INVALID_PASSWORD":
+	                        _this.error = "The specified user account email/password are incorrect.";
+	                        break;
+	                    case "NETWORK_ERROR":
+	                        _this.error = "An error occurred while attempting to contact the authentication server.";
+	                        break;
+	                    default:
+	                        _this.error = error;
+	                }
+	            }
+	        });
+	    };
 	    LoginPage = __decorate([
-	        ionic_angular_1.Page({
+	        core_1.Component({
 	            templateUrl: 'build/pages/login/login.html'
 	        }), 
-	        __metadata('design:paramtypes', [])
+	        __metadata('design:paramtypes', [angularfire2_1.AngularFire, ionic_angular_1.NavController])
 	    ], LoginPage);
 	    return LoginPage;
 	}());
@@ -80383,6 +80425,72 @@
 	    return RegisterPage;
 	}());
 	exports.RegisterPage = RegisterPage;
+
+
+/***/ },
+/* 464 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	var ionic_angular_1 = __webpack_require__(102);
+	var angularfire2_1 = __webpack_require__(412);
+	var core_1 = __webpack_require__(6);
+	var login_1 = __webpack_require__(462);
+	var HomePage = (function () {
+	    function HomePage(af, navCtrl) {
+	        this.af = af;
+	        this.navCtrl = navCtrl;
+	    }
+	    HomePage.prototype.ngOnInit = function () {
+	        var _this = this;
+	        this.messages = this.af.database.list("/messages");
+	        this.af.auth.subscribe(function (data) {
+	            if (data) {
+	                _this.authInfo = data;
+	            }
+	            else {
+	                _this.authInfo = null;
+	            }
+	        });
+	    };
+	    HomePage.prototype.sendMessage = function (message) {
+	        this.messages.push({
+	            author: 'Kevin',
+	            body: message
+	        });
+	        this.message = '';
+	    };
+	    HomePage.prototype.logout = function () {
+	        if (this.authInfo) {
+	            var loading = ionic_angular_1.Loading.create({
+	                content: "Please wait"
+	            });
+	            this.navCtrl.present(loading);
+	            console.log('logging out');
+	            this.af.auth.logout();
+	            loading.dismiss();
+	            this.navCtrl.setRoot(login_1.LoginPage);
+	            return;
+	        }
+	    };
+	    HomePage = __decorate([
+	        core_1.Component({
+	            templateUrl: 'build/pages/home/home.html'
+	        }), 
+	        __metadata('design:paramtypes', [angularfire2_1.AngularFire, ionic_angular_1.NavController])
+	    ], HomePage);
+	    return HomePage;
+	}());
+	exports.HomePage = HomePage;
 
 
 /***/ }

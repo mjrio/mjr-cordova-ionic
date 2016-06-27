@@ -1,26 +1,28 @@
-
 <ion-toolbar>
-    <ion-title>mjrChat</ion-title>
+    <ion-title>Welcome to mjrChat!</ion-title>
 </ion-toolbar>
 
-<ion-content padding class="getting-started">
+<ion-content>
+        <form #loginCredentials="ngForm">
+            <ion-list>
+                <ion-item>
+                    <ion-label floating>Email</ion-label>
+                    <ion-input type="text" ngControl="email"></ion-input>
+                </ion-item>
 
-    <h3>Welcome to mjrChat!</h3>
+                <ion-item>
+                    <ion-label floating>Password</ion-label>
+                    <ion-input type="password" ngControl="password"></ion-input>
+                </ion-item>
+            </ion-list>
 
-    <ion-list>
-
-        <ion-item>
-            <ion-label fixed>Username</ion-label>
-            <ion-input type="text" value=""></ion-input>
-        </ion-item>
-
-        <ion-item>
-            <ion-label fixed>Password</ion-label>
-            <ion-input type="password"></ion-input>
-        </ion-item>
-
-    </ion-list>
-    <button full>Login</button>
-    <button full secondary [navPush]="registerPage">Register</button>
-
+            <div padding><button block [disabled]="!loginCredentials.value.email || !loginCredentials.value.password"
+                    class="log-in-btn" (click)="login(loginCredentials.value)">Log In
+            </button>
+            <button full secondary [navPush]="registerPage">Register</button>
+            </div>
+            <div padding class="error" *ngIf="error">
+                <p>{{error}}</p>
+            </div>
+        </form>
 </ion-content>

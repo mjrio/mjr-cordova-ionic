@@ -1,4 +1,3 @@
-import {Page} from 'ionic-angular';
 import {NavController, Loading} from "ionic-angular";
 import {AngularFire, AuthProviders, AuthMethods} from "angularfire2";
 import {OnInit, Inject, Component} from "@angular/core";
@@ -26,7 +25,7 @@ export class RegisterPage {
         });
         this.navCtrl.present(loading);
 
-        this.af.auth.createUser(credentials).then((authData:FirebaseAuthData) => {
+        this.af.auth.createUser(credentials).then((authData) => {
             console.log(authData);
             credentials.created = true;
             return this.login(credentials, loading);
