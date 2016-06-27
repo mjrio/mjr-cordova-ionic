@@ -41,17 +41,11 @@ export class HomePage {
     }
 
     logout() {
-
         if (this.authInfo) {
-            let loading = Loading.create({
-                content: "Please wait"
-            });
-            this.navCtrl.present(loading);
-            console.log('logging out');
             this.af.auth.logout();
-            loading.dismiss();
             this.navCtrl.setRoot(LoginPage);
             return;
+
         }
     }
 }

@@ -21,16 +21,21 @@ export class RegisterPage {
 
     registerUser(credentials) {
         let loading = Loading.create({
-            content: "Please wait..."
+            content: "Please wait...",
+            duration: 500,
+            dismissOnPageChange: false
         });
-        this.navCtrl.present(loading);
+        // race condition
+        setTimeout(()=>{
+            this.navCtrl.present(loading);
+        });
 
         this.af.auth.createUser(credentials).then((authData) => {
             console.log(authData);
             credentials.created = true;
             return this.login(credentials, loading);
         }).catch((error) => {
-            loading.dismiss();
+            //loading.dismiss();
             if (error) {
                 switch (error.code) {
                     case "INVALID_EMAIL":
@@ -54,9 +59,10 @@ export class RegisterPage {
             provider: AuthProviders.Password,
             method: AuthMethods.Password
         }).then((authData) => {
+            debugger;
             console.log(authData);
             loading.dismiss();
-            this.navCtrl.setRoot(LoginPage);
+            this.navCtrl.push(LoginPage);
         }).catch((error) => {
             loading.dismiss();
             this.error = error;

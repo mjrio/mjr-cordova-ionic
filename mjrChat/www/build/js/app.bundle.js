@@ -80375,15 +80375,20 @@
 	    RegisterPage.prototype.registerUser = function (credentials) {
 	        var _this = this;
 	        var loading = ionic_angular_1.Loading.create({
-	            content: "Please wait..."
+	            content: "Please wait...",
+	            duration: 500,
+	            dismissOnPageChange: false
 	        });
-	        this.navCtrl.present(loading);
+	        // race condition
+	        setTimeout(function () {
+	            _this.navCtrl.present(loading);
+	        });
 	        this.af.auth.createUser(credentials).then(function (authData) {
 	            console.log(authData);
 	            credentials.created = true;
 	            return _this.login(credentials, loading);
 	        }).catch(function (error) {
-	            loading.dismiss();
+	            //loading.dismiss();
 	            if (error) {
 	                switch (error.code) {
 	                    case "INVALID_EMAIL":
@@ -80407,9 +80412,10 @@
 	            provider: angularfire2_1.AuthProviders.Password,
 	            method: angularfire2_1.AuthMethods.Password
 	        }).then(function (authData) {
+	            debugger;
 	            console.log(authData);
 	            loading.dismiss();
-	            _this.navCtrl.setRoot(login_1.LoginPage);
+	            _this.navCtrl.push(login_1.LoginPage);
 	        }).catch(function (error) {
 	            loading.dismiss();
 	            _this.error = error;
@@ -80471,13 +80477,7 @@
 	    };
 	    HomePage.prototype.logout = function () {
 	        if (this.authInfo) {
-	            var loading = ionic_angular_1.Loading.create({
-	                content: "Please wait"
-	            });
-	            this.navCtrl.present(loading);
-	            console.log('logging out');
 	            this.af.auth.logout();
-	            loading.dismiss();
 	            this.navCtrl.setRoot(login_1.LoginPage);
 	            return;
 	        }
