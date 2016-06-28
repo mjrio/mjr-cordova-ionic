@@ -1,0 +1,27 @@
+<ion-navbar>
+    <ion-title>Chat with other majors</ion-title>
+    <ion-buttons end>
+        <button (click)="logout()">
+            <ion-icon name="log-out"></ion-icon>
+        </button>
+    </ion-buttons>
+</ion-navbar>
+
+<ion-content padding class="getting-started">
+    <ion-list>
+        <ion-item *ngFor="let message of messages | async">
+            <h2>{{message.author}}</h2>
+            <p>{{message.body}}</p>
+        </ion-item>
+    </ion-list>
+
+
+        <ion-list>
+            <ion-item>
+                <ion-input placeholder="Message" type="text" [(ngModel)]="message"></ion-input>
+            </ion-item>
+        </ion-list>
+        <button [disabled]="!message" (click)="sendMessage(message)">
+            Send
+        </button>
+</ion-content>

@@ -1,0 +1,31 @@
+<ion-navbar *navbar>
+    <ion-title>Register your user</ion-title>
+</ion-navbar>
+
+<ion-content padding class="getting-started">
+    <form #signUpCredentials="ngForm">
+    <ion-list>
+
+        <ion-item>
+            <ion-label floating>Email</ion-label>
+            <ion-input type="text" ngControl="email"></ion-input>
+        </ion-item>
+
+        <ion-item>
+            <ion-label floating>Password</ion-label>
+            <ion-input type="password" ngControl="password"></ion-input>
+        </ion-item>
+
+
+    </ion-list>
+        <button block [disabled]="!signUpCredentials.value.email || !signUpCredentials.value.password"
+                class="sign-up-btn" (click)="registerUser(signUpCredentials.value)">
+            Register
+        </button>
+
+        <div padding class="error" *ngIf="error">
+            <p>{{error}}</p>
+        </div>
+    </form>
+
+</ion-content>
