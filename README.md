@@ -19,11 +19,13 @@
 
 ## Ionic 2 Starter (Kevin)
 
+Ionic is a platform that combines a set of front-end components that lets you write an HTML5 app that looks like a native app. It is build on top of cordova.
+
 Generate an ionic2 typescript app
 
 	ionic start mjrChat blank --v2 --ts
 
-This created a blank ionic2 project in the folder mjrChat with the default platform iOS added.
+This created a blank ionic2 project in the folder mjrChat with the default platform iOS added and angular2 rc3.
 
 Other starter templates are:
 
@@ -77,16 +79,10 @@ To use hardware functionalities, plugins close the gap between javascript and na
 	ionic plugin list
 	ionic plugin add ...
 
-Other serve options are
+Upload the app to ionicView and test on your device
 
-	ionic serve --lab
-	ionic serve --platform ios
-	ionic serve --consolelogs
-
-	ionic emulate ios | android
 	ionic upload
-	npm install angularfire2 && firebase --save
-	typings install dt~firebase --global --save
+
 
 ## Continue with ionic (Peter)
 
