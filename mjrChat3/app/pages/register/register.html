@@ -6,12 +6,12 @@
 -->
 <ion-header>
 
-  <ion-navbar>
-    <ion-title>Register</ion-title>
-    <ion-buttons left>
-        <button (click)="onClose()">Close</button>
-    </ion-buttons>
-  </ion-navbar>
+    <ion-navbar>
+        <ion-title>Register</ion-title>
+        <ion-buttons left>
+            <button (click)="onClose()">Close</button>
+        </ion-buttons>
+    </ion-navbar>
 
 </ion-header>
 
@@ -22,6 +22,13 @@
     </p>
     <form [ngFormModel]="registerForm" (ngSubmit)="onSubmit(registerForm.value)">
         <ion-list>
+
+            <ion-item>
+                <ion-input type="userName"
+                           ngControl="userName"
+                           placeholder="Username">
+                </ion-input>
+            </ion-item>
 
             <ion-item>
                 <ion-input type="email"
@@ -39,5 +46,8 @@
 
         </ion-list>
         <button type="submit" block [disabled]="!registerForm.valid">Register</button>
+        <div padding class="error" *ngIf="error">
+            <p>{{error}}</p>
+        </div>
     </form>
 </ion-content>

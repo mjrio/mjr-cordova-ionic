@@ -6,7 +6,6 @@ import {HomePage} from './pages/home/home';
 
 import {FIREBASE_PROVIDERS,
     defaultFirebase,
-    AngularFire,
     AuthMethods,
     AuthProviders,
     firebaseAuthConfig} from 'angularfire2';
@@ -15,6 +14,7 @@ import {FIREBASE_PROVIDERS,
   template: '<ion-nav [root]="rootPage"></ion-nav>'
 })
 export class MyApp {
+  // rootPage: any = HomePage;
   rootPage: any = LoginPage;
 
   constructor(platform: Platform) {

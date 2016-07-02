@@ -6,9 +6,9 @@
 -->
 <ion-header>
 
-  <ion-navbar>
-    <ion-title>Login</ion-title>
-  </ion-navbar>
+    <ion-navbar>
+        <ion-title>Login</ion-title>
+    </ion-navbar>
 
 </ion-header>
 
@@ -36,6 +36,9 @@
 
         </ion-list>
         <button type="submit" block [disabled]="!authForm.valid">Login</button>
+        <div padding class="error" *ngIf="error">
+            <p>{{error}}</p>
+        </div>
     </form>
     <button light full (click)="onRegister()">Register</button>
 </ion-content>
