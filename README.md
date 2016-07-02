@@ -22,7 +22,7 @@
 Generate an ionic2 typescript app
 
 	ionic start mjrChat blank --v2 --ts
-	
+
 This created a blank ionic2 project in the folder mjrChat with the default platform iOS added.
 
 Other starter templates are:
@@ -34,50 +34,50 @@ Other starter templates are:
 Navigate to the project folder
 
 	cd mjrChat
-	
+
 Run the app
-	
+
 	ionic serve
-	
+
 Run the app in lab mode
-	
+
 	ionic serve --lab
-	
+
 Run the app for a specific platform
 
 	ionic serve --platform ios
-	
+
 Run the app with console logging in the terminal
 
 	ionic serve --consolelogs
-	
+
 Run the app on default emulator
 
 	ionic emulate ios
 
 Run the app on a specified emulator
 List all emulator images
-	
+
 	./platforms/ios/cordova/lib/list-emulator-images
 	ionic emulate ios --target="iPhone-4s, 9.3"
-	
-To run on a device, a developer account, developement certificate and provisioning profiles are needed. 
+
+To run on a device, a developer account, developement certificate and provisioning profiles are needed.
 Run the app on a device
-	
+
 	ionic run ios
-	
+
 To add other platforms
-	
+
 	ionic platform list
 	ionic platform add android
 
 To use hardware functionalities, plugins close the gap between javascript and native code
 [Cordova plugins](https://cordova.apache.org/plugins/?platforms=cordova-ios)
-	
+
 	ionic plugin list
 	ionic plugin add ...
-	
-Other serve options are 
+
+Other serve options are
 
 	ionic serve --lab
 	ionic serve --platform ios
@@ -380,5 +380,7 @@ T.B.D
 
     ionic emulate ios | android
     ionic upload
-    npm install angularfire2 && firebase --save
+
+    npm install firebase --save
+    npm install https://github.com/angular/angularfire2 --save
     typings install dt~firebase --global --save
