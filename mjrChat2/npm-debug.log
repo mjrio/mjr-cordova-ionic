@@ -1,0 +1,98 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/local/bin/node',
+1 verbose cli   '/usr/local/bin/npm',
+1 verbose cli   'install',
+1 verbose cli   '@angular/forms' ]
+2 info using npm@3.8.3
+3 info using node@v5.10.0
+4 silly loadCurrentTree Starting
+5 silly install loadCurrentTree
+6 silly install readLocalPackageData
+7 silly fetchPackageMetaData @angular/forms@2.0.0-rc.3
+8 silly fetchNamedPackageData @angular/forms
+9 silly mapToRegistry name @angular/forms
+10 silly mapToRegistry scope (from package name) @angular
+11 verbose mapToRegistry no registry URL found in name for scope @angular
+12 silly mapToRegistry using default registry
+13 silly mapToRegistry registry https://registry.npmjs.org/
+14 silly mapToRegistry data Result {
+14 silly mapToRegistry   raw: '@angular/forms',
+14 silly mapToRegistry   scope: '@angular',
+14 silly mapToRegistry   name: '@angular/forms',
+14 silly mapToRegistry   rawSpec: '',
+14 silly mapToRegistry   spec: 'latest',
+14 silly mapToRegistry   type: 'tag' }
+15 silly mapToRegistry uri https://registry.npmjs.org/@angular%2fforms
+16 verbose request uri https://registry.npmjs.org/@angular%2fforms
+17 verbose request no auth needed
+18 info attempt registry request try #1 at 2:21:12 PM
+19 verbose request id 7471531ebe21cc9c
+20 verbose etag "42L1TOH4L2B4FIPLDR7LUPONC"
+21 http request GET https://registry.npmjs.org/@angular%2fforms
+22 http 304 https://registry.npmjs.org/@angular%2fforms
+23 verbose headers { date: 'Sat, 02 Jul 2016 12:21:12 GMT',
+23 verbose headers   via: '1.1 varnish',
+23 verbose headers   'cache-control': 'max-age=0',
+23 verbose headers   etag: '"42L1TOH4L2B4FIPLDR7LUPONC"',
+23 verbose headers   age: '0',
+23 verbose headers   connection: 'keep-alive',
+23 verbose headers   'x-served-by': 'cache-ams4123-AMS',
+23 verbose headers   'x-cache': 'MISS',
+23 verbose headers   'x-cache-hits': '0',
+23 verbose headers   'x-timer': 'S1467462072.955308,VS0,VE726',
+23 verbose headers   vary: 'Accept-Encoding' }
+24 silly get cb [ 304,
+24 silly get   { date: 'Sat, 02 Jul 2016 12:21:12 GMT',
+24 silly get     via: '1.1 varnish',
+24 silly get     'cache-control': 'max-age=0',
+24 silly get     etag: '"42L1TOH4L2B4FIPLDR7LUPONC"',
+24 silly get     age: '0',
+24 silly get     connection: 'keep-alive',
+24 silly get     'x-served-by': 'cache-ams4123-AMS',
+24 silly get     'x-cache': 'MISS',
+24 silly get     'x-cache-hits': '0',
+24 silly get     'x-timer': 'S1467462072.955308,VS0,VE726',
+24 silly get     vary: 'Accept-Encoding' } ]
+25 verbose etag https://registry.npmjs.org/@angular%2fforms from cache
+26 verbose get saving @angular/forms to /Users/peter/.npm/registry.npmjs.org/_40angular_252fforms/.cache.json
+27 verbose correctMkdir /Users/peter/.npm correctMkdir not in flight; initializing
+28 silly fetchPackageMetaData Error: No compatible version found: @angular/forms@2.0.0-rc.3
+28 silly fetchPackageMetaData Valid install targets:
+28 silly fetchPackageMetaData 0.2.0, 0.1.1, 0.1.0
+28 silly fetchPackageMetaData
+28 silly fetchPackageMetaData     at pickVersionFromRegistryDocument (/usr/local/lib/node_modules/npm/lib/fetch-package-metadata.js:156:16)
+28 silly fetchPackageMetaData     at /usr/local/lib/node_modules/npm/node_modules/iferr/index.js:13:50
+28 silly fetchPackageMetaData     at /usr/local/lib/node_modules/npm/lib/utils/pulse-till-done.js:19:8
+28 silly fetchPackageMetaData     at saved (/usr/local/lib/node_modules/npm/lib/cache/caching-client.js:168:7)
+28 silly fetchPackageMetaData     at /usr/local/lib/node_modules/npm/node_modules/graceful-fs/polyfills.js:210:7
+28 silly fetchPackageMetaData     at FSReqWrap.oncomplete (fs.js:82:15)
+28 silly fetchPackageMetaData  error for @angular/forms@2.0.0-rc.3 [Error: No compatible version found: @angular/forms@2.0.0-rc.3
+28 silly fetchPackageMetaData Valid install targets:
+28 silly fetchPackageMetaData 0.2.0, 0.1.1, 0.1.0
+28 silly fetchPackageMetaData ]
+29 silly rollbackFailedOptional Starting
+30 silly rollbackFailedOptional Finishing
+31 silly runTopLevelLifecycles Starting
+32 silly runTopLevelLifecycles Finishing
+33 silly install printInstalled
+34 verbose stack Error: No compatible version found: @angular/forms@2.0.0-rc.3
+34 verbose stack Valid install targets:
+34 verbose stack 0.2.0, 0.1.1, 0.1.0
+34 verbose stack
+34 verbose stack     at pickVersionFromRegistryDocument (/usr/local/lib/node_modules/npm/lib/fetch-package-metadata.js:156:16)
+34 verbose stack     at /usr/local/lib/node_modules/npm/node_modules/iferr/index.js:13:50
+34 verbose stack     at /usr/local/lib/node_modules/npm/lib/utils/pulse-till-done.js:19:8
+34 verbose stack     at saved (/usr/local/lib/node_modules/npm/lib/cache/caching-client.js:168:7)
+34 verbose stack     at /usr/local/lib/node_modules/npm/node_modules/graceful-fs/polyfills.js:210:7
+34 verbose stack     at FSReqWrap.oncomplete (fs.js:82:15)
+35 verbose cwd /Users/peter/git/mjr-cordova-ionic/mjrChat2
+36 error Darwin 15.5.0
+37 error argv "/usr/local/bin/node" "/usr/local/bin/npm" "install" "@angular/forms"
+38 error node v5.10.0
+39 error npm  v3.8.3
+40 error No compatible version found: @angular/forms@2.0.0-rc.3
+40 error Valid install targets:
+40 error 0.2.0, 0.1.1, 0.1.0
+41 error If you need help, you may report this error at:
+41 error     <https://github.com/npm/npm/issues>
+42 verbose exit [ 1, true ]

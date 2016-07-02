@@ -1,23 +1,29 @@
 import { Component } from '@angular/core';
+import { ControlGroup, Validators, FormBuilder } from '@angular/common';
 import { NavController, ViewController } from 'ionic-angular';
 
-/*
-  Generated class for the RegisterPage page.
-
-  See http://ionicframework.com/docs/v2/components/#navigation for more info on
-  Ionic pages and navigation.
-*/
 @Component({
-  templateUrl: 'build/pages/register/register.html',
+    templateUrl: 'build/pages/register/register.html',
 })
 export class RegisterPage {
 
-  constructor(private nav: NavController, private view: ViewController) {
+    registerForm: ControlGroup;
 
-  }
+    constructor(private nav: NavController,
+        private view: ViewController,
+        private formBuilder: FormBuilder) {
+        this.registerForm = formBuilder.group({
+            email: ['', Validators.required],
+            password: ['', Validators.required],
+        });
+    }
 
-  onClose() {
-      this.view.dismiss();
-  }
+    onSubmit(value: string): void {
+        console.log('Submitted value: ', value);
+        this.view.dismiss();
+    }
 
+    onClose() {
+        this.view.dismiss();
+    }
 }

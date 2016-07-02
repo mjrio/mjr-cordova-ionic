@@ -14,21 +14,28 @@
 
 
 <ion-content padding>
-    <ion-list>
+    <p center>
+        Please enter your credentials to login.
+    </p>
+    <form [ngFormModel]="authForm" (ngSubmit)="onSubmit(authForm.value)">
+        <ion-list>
 
-        <ion-item>
-            <ion-input type="tel" placeholder="Phone"></ion-input>
-        </ion-item>
+            <ion-item>
+                <ion-input type="email"
+                           ngControl="email"
+                           placeholder="Email">
+                </ion-input>
+            </ion-item>
 
-        <ion-item>
-            <ion-input type="email" placeholder="Email"></ion-input>
-        </ion-item>
+            <ion-item>
+                <ion-input type="password"
+                           ngControl="password"
+                           placeholder="Password">
+                </ion-input>
+            </ion-item>
 
-        <ion-item>
-            <ion-input type="password" placeholder="Password"></ion-input>
-        </ion-item>
-
-    </ion-list>
-    <button full (click)="onLogin()">Login</button>
+        </ion-list>
+        <button type="submit" block [disabled]="!authForm.valid">Login</button>
+    </form>
     <button light full (click)="onRegister()">Register</button>
 </ion-content>
