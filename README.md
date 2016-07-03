@@ -93,10 +93,10 @@ To debug on the device or emulator, enable the javascript inspector on the devic
 	Settings > Safari > Advanced > Web Inspector
 
 Enable de debug mode in Safari
-
+	
 	Safari > Preferences > Advanced
-
-
+	
+	
 ## Continue with ionic (Peter)
 
 Give our app a title
@@ -284,104 +284,176 @@ Add input elements to list
 	    AuthMethods,
 	    AuthProviders,
 	    firebaseAuthConfig} from 'angularfire2';
+	    
+	    
+####Create an Auth provider
 
-####Add Firebase to the registerPage
+Create providers/auth/auth.ts
 
-Inject AngularFire into the constructor
+Import angularFire and toPromise of rxJs
+
+	import {AngularFire, AuthProviders, AuthMethods, FirebaseObjectObservable} from "angularfire2";
+	import 'rxjs/add/operator/toPromise';
 	
-	import {AngularFire} from "angularfire2";
+Create a getIdentity function
+	
+	getIdentity() {
+        return this.identity;
+    }
+    
+Create a register function
+    
+    register(name:string, email:string, password:string) {
+        return this.af.auth.createUser({email, password})
+            .then((authData) => {
+                console.log(authData);
+                // additionally register user name
+                this.af.database.object('/users/' + authData.uid).set({
+                    email: authData.auth.email,
+                    name
+                });
+                this.identity = {
+                    email: authData.auth.email,
+                    uid: authData.uid,
+                    name: name,
+                };
+                return this.identity;
+            })
+    }
+    
+Create a login function
 
-	private af: AngularFire
+    login(email:string, password:string) {
+        const loginOptions = {
+            provider: AuthProviders.Password,
+            method: AuthMethods.Password
+        };
+        return this.af.auth.login({email, password}, loginOptions)
+            .then((authData) => {
+                this.identity = {
+                    email: authData.auth.email,
+                    uid: authData.auth.uid,
+                };
+                // we need to wrap the observable in a promise
+                return new Promise((resolve) => {
+                    // get the user profile
+                    this.af.database.object('/users/' + this.identity.uid)
+                        .subscribe(userProfile => {
+                            resolve(userProfile);
+                        });
+                });
+            })
+            .then(userProfile => {
+                // add user name to identity
+                this.identity.name = userProfile.name;
+                return this.identity
+            })
+    }
+    
+####Make Auth global available by adding it in ionicBootstrap providers array
+
+In app.ts add Auth in the providers array
+
+####Add Auth provider to the registerPage
+
+Inject the auth provider into the constructor
+	
+	import {Auth} from '../../providers/auth/auth';
+
+	private auth:Auth
 	
 Update onSubmit function with angularFire logic
 
 	onSubmit(value:any):void {
-        console.log('Submitted value: ', value);
-        let loading = Loading.create({
-            content: "Please wait...",
-            duration: 500,
-            dismissOnPageChange: false
-        });
-        // race condition
-        setTimeout(()=> {
-            this.nav.present(loading);
-        });
-
-        this.af.auth.createUser(value).then((authData) => {
-            console.log(authData);
-            this.view.dismiss();
-        }).catch((errorMessage:any) => {
-            if (errorMessage) {
-                switch (errorMessage.code) {
-                    case "INVALID_EMAIL":
-                        this.error = "Invalid email.";
-                        break;
-                    case "EMAIL_TAKEN":
-                        this.error = "The specified email address is already in use.";
-                        break;
-                    case "NETWORK_ERROR":
-                        this.error = "An error occurred while attempting to contact the authentication server.";
-                        break;
-                    default:
-                        this.error = errorMessage.message;
+        console.log('onRegister: ', value);
+        this.auth.register(value.userName, value.email, value.password)
+            .then(identity => {
+                console.log('onRegister successful: ', identity);
+                this.view.dismiss(identity);
+            })
+            .catch((errorMessage:any) => {
+                console.log('error', errorMessage);
+                if (errorMessage) {
+                    switch (errorMessage.code) {
+                        case "INVALID_EMAIL":
+                            this.error = "Invalid email.";
+                            break;
+                        case "EMAIL_TAKEN":
+                            this.error = "The specified email address is already in use.";
+                            break;
+                        case "NETWORK_ERROR":
+                            this.error = "An error occurred while attempting to contact the authentication server.";
+                            break;
+                        default:
+                            this.error = errorMessage.message;
+                    }
+                    
                 }
-            }
-        });
-
-        this.view.dismiss();
-    }
-    
+            })
+    }    
 Add the error placeholder to the html
 
 	 <div padding class="error" *ngIf="error">
         <p>{{error}}</p>
     </div>
     
-####Add Firebase to the loginPage
-Inject angularFire
+####Add Auth provider to the loginPage
 
-	import {AngularFire, AuthProviders, AuthMethods} from "angularfire2";
+Inject the auth provider into the constructor
 
-	private af: AngularFire
+	import {Auth} from '../../providers/auth/auth';
+
+	private auth:Auth
 	
 Add login function
 
-	login(credentials) {
-        let loading = Loading.create({
-            content: "Please wait"
-        });
-        this.nav.present(loading);
-
-        this.af.auth.login(credentials, {
-            provider: AuthProviders.Password,
-            method: AuthMethods.Password
-        }).then((authData) => {
-            console.log("Logged in", authData);
-            loading.dismiss();
-            this.nav.setRoot(HomePage);
-        }).catch((errorMessage: any) => {
-            loading.dismiss();
-            if (errorMessage) {
-                switch (errorMessage.code) {
-                    case "INVALID_EMAIL":
-                        this.error = "Invalid email.";
-                        break;
-                    case "INVALID_USER":
-                        this.error = "The specified user account email/password are incorrect.";
-                        break;
-                    case "INVALID_PASSWORD":
-                        this.error = "The specified user account email/password are incorrect.";
-                        break;
-                    case "NETWORK_ERROR":
-                        this.error = "An error occurred while attempting to contact the authentication server.";
-                        break;
-                    default:
-                        this.error = errorMessage.message;
+	login(email, password) {
+        this.auth.login(email, password)
+            .then(identity => {
+                console.log("Logged in", identity);
+                this.nav.setRoot(HomePage);
+            })
+            .catch((errorMessage:any) => {
+                if (errorMessage) {
+                    switch (errorMessage.code) {
+                        case "INVALID_EMAIL":
+                            this.error = "Invalid email.";
+                            break;
+                        case "INVALID_USER":
+                            this.error = "The specified user account email/password are incorrect.";
+                            break;
+                        case "INVALID_PASSWORD":
+                            this.error = "The specified user account email/password are incorrect.";
+                            break;
+                        case "NETWORK_ERROR":
+                            this.error = "An error occurred while attempting to contact the authentication server.";
+                            break;
+                        default:
+                            this.error = errorMessage.message;
+                    }
                 }
+            })
+    }
+    
+    
+Add the onRegister function 
+
+    onRegister() {
+        const modal = Modal.create(RegisterPage);
+        modal.onDismiss(identity => {
+            if (identity) {
+                console.log("Logged in", identity);
+                this.nav.setRoot(HomePage);
+                return;
             }
         });
+        this.nav.present(modal);
     }
+    
+Add onRegister to the registerButton
 
+    <button light full (click)="onRegister()">Register</button>
+    
 Add the error placeholder to the html
 
 	 <div padding class="error" *ngIf="error">
@@ -425,47 +497,42 @@ Update the html so it looks like this:
 Inject AngularFire
 
 	import {AngularFire, FirebaseListObservable} from "angularfire2";
+	import {Auth} from '../../providers/auth/auth';
 
 Create local variables to hold the data
 	
 	error:any;
-    authInfo:any;
+    identity:any;
+    userName: string;
     message: string;
-    messages:FirebaseListObservable<any[]>;
-
+    messages$:FirebaseListObservable<any[]>;
+    
 Implement the lifeCycle hook OnInit
 
 	ngOnInit() {
-        this.messages = this.af.database.list("/messages");
-
-        this.af.auth.subscribe(data => {
-            if (data) {
-                this.authInfo = data;
-            } else {
-                this.authInfo = null;
-            }
-        });
-    }
-    
+        this.messages$ = this.af.database.list("/messages");
+        this.identity = this.auth.getIdentity();
+        console.log('Identity:', this.identity)
+    }    
 Create a method to post a new message
 
 	sendMessage(message:string) {
-        this.messages.push({
-            author: 'Kevin',
+        this.messages$.push({
+            author: this.identity.name,
             body: message
         });
         this.message = '';
     }
-    
+        
 Create a method to logout
 
 	logout() {
-	        if (this.authInfo) {
-	            this.af.auth.logout();
-	            this.navCtrl.setRoot(LoginPage);
-	            return;
-	        }
-	    }
+        if (this.identity) {
+            this.af.auth.logout();
+            this.nav.setRoot(LoginPage);
+            return;
+        }
+    }
 
 
 # Overview Ionic commands
