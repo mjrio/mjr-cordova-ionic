@@ -88,6 +88,15 @@ Upload the app to ionicView and test on your device
 	ionic upload
 	
 	
+To debug on the device or emulator, enable the javascript inspector on the device:
+
+	Settings > Safari > Advanced > Web Inspector
+
+Enable de debug mode in Safari
+
+	Safari > Preferences > Advanced
+
+
 ## Continue with ionic (Peter)
 
 Give our app a title

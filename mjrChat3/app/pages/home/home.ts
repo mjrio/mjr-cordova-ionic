@@ -9,10 +9,10 @@ import {OnInit} from "@angular/core";
 @Component({
     templateUrl: 'build/pages/home/home.html'
 })
-export class HomePage implements OnInit{
+export class HomePage implements OnInit {
     error:any;
     authInfo:any;
-    message: string;
+    message:string;
     messages:FirebaseListObservable<any[]>;
 
     constructor(private nav:NavController,
@@ -24,6 +24,7 @@ export class HomePage implements OnInit{
         this.messages = this.af.database.list("/messages");
 
         this.af.auth.subscribe(data => {
+            debugger;
             if (data) {
                 this.authInfo = data;
             } else {
@@ -41,10 +42,8 @@ export class HomePage implements OnInit{
     }
 
     logout() {
-        if (this.authInfo) {
-            this.af.auth.logout();
-            this.nav.setRoot(LoginPage);
-            return;
-        }
+        this.af.auth.logout();
+        this.nav.setRoot(LoginPage);
+        return;
     }
 }
