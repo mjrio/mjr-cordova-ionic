@@ -20,7 +20,7 @@ export class Auth {
                 // additionally register user name
                 this.af.database.object('/users/' + authData.uid).set({
                     email: authData.auth.email,
-                    name
+                    name: name
                 });
                 this.identity = {
                     email: authData.auth.email,
