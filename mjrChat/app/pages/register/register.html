@@ -1,0 +1,38 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>Register</ion-title>
+        <ion-buttons left>
+            <button (click)="close()">Close</button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+    <p text-center>
+        Please enter your prefered email and password so we can create your account
+    </p>
+    <form [ngFormModel]="registerForm" (ngSubmit)="onRegister(registerForm)">
+        <ion-list>
+            <ion-item>
+                <ion-input type="text"
+                           placeholder="name"
+                           ngControl="name">
+                </ion-input>
+            </ion-item>
+            <ion-item>
+                <ion-input type="email"
+                           placeholder="email"
+                           ngControl="email">
+                </ion-input>
+            </ion-item>
+            <ion-item>
+                <ion-input type="password"
+                           placeholder="password"
+                           ngControl="password">
+                </ion-input>
+            </ion-item>
+        </ion-list>
+
+        <button block type="submit">Register</button>
+    </form>
+</ion-content>
